@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+
+.nav-item.active {
+    background-color: #815c86;
+    font-weight: bold;
+}
+
+.fieldName {
+    font-weight: bold;
+}
+
+.btn-property {
+    margin-right: 15px;
+}
+
+.myaccordion {
+    margin: 20px auto;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.myaccordion .card, .myaccordion .card:last-child .card-header {
+    border: none;
+}
+
+.myaccordion .card-header {
+    border-bottom-color: #EDEFF0;
+    background: #d4d4d4;
+}
+
+.myaccordion .fa-stack {
+    font-size: 18px;
+}
+
+.myaccordion .btn-link:hover, .myaccordion .btn-link:focus {
+    text-decoration: none;
+}
+
+.myaccordion li+li {
+    margin-top: 10px;
+}
+
+.card-header a {
+    width: 100%;
+    text-align: left;
+}

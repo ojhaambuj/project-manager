@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a href="#" class="navbar-brand">Project Manager</a>
+  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item" [routerLinkActive]="['active']"><a class="nav-link" routerLink="/add-project">Add Project</a></li>
+        <li class="nav-item" [routerLinkActive]="['active']"><a class="nav-link" routerLink="/add-task">Add Task</a></li>
+        <li class="nav-item" [routerLinkActive]="['active']"><a class="nav-link" routerLink="/add-user">Add User</a></li>
+        <li class="nav-item" [routerLinkActive]="['active']"><a class="nav-link" routerLink="/view-task">View Task</a></li>
+      </ul>
+    </div>
+</nav>
+
+<div class="container wrapper">
+    <router-outlet></router-outlet>
+</div>

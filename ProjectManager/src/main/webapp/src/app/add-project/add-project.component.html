@@ -1,0 +1,201 @@
+<ngx-spinner></ngx-spinner>
+<div id="accordion" id="projectAddAccordion" class="myaccordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <a class="btn" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5 class="mb-0">Add Project</h5>
+            </a>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#projectAddAccordion">
+            <div class="card-body">
+                <form [formGroup]="projectForm" ngNativeValidate (ngSubmit)="manageProject()" autocomplete="off">
+                    <input type="hidden" maxlength="30" class="form-control" formControlName="noOfTasks">
+                    <input type="hidden" maxlength="30" class="form-control" formControlName="completed">
+                    <div class="form-group-row"><label></label></div>
+                    <div class="form-group-row alert alert-success" *ngIf="isSuccess && alertMsg.length > 0">
+                        {{alertMsg}}
+                    </div>
+                    <div class="form-group-row alert alert-danger" *ngIf="!isSuccess && alertMsg.length > 0">
+                        <strong>Error:</strong> {{alertMsg}}
+                    </div>
+                    <div class="form-group row">
+                        <label for="project" class="col-sm-2 col-form-label fieldName">Project:</label>
+                        <div class="col-sm-6">
+                            <input type="text" maxlength="30" class="form-control" 
+                                [attr.disabled]="addOrUpdate == 'Update'?true:null" formControlName="project" id="project" placeholder="Project">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label><input type="checkbox" (change)="enableDate()" value="" formControlName="projectCheckBox">Set Start and End Date</label>
+                                &nbsp;
+                                <input type="date" id="startDate" formControlName="startDate" required>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                &nbsp;
+                                <input type="date" id="endDate" formControlName="endDate" required>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label fieldName">Priority:</label>
+                        <div class="col-sm-6">
+                            <span class="font-weight-bold float-left">0</span>
+                            <span class="font-weight-bold float-right">30</span>
+                            <span style="margin-left: 46%;" class="font-weight-bold">{{projectForm.value.priority}}</span>
+                            <input type="range" class="custom-range" id="priority" min="0" max="30" 
+                                formControlName="priority" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label fieldName">Manager:</label>
+                        <div class="col-sm-4">
+                            <input type="text" maxlength="30"
+                              required class="form-control" formControlName="manager" id="manager">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" (click)="loadUsers()" class="btn btn-secondary btn-property">Search</button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 offset-sm-2">
+                            <button type="submit" class="btn btn-secondary btn-property">{{addOrUpdate}}</button>
+                            <button type="button" (click)="reset()" class="btn btn-secondary btn-property">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="accordion" id="projectViewAccordion" class="myaccordion">
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <a class="btn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <h5 class="mb-0">View Projects</h5>
+            </a>
+        </div>
+        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#projectViewAccordion">
+            <div class="card-body">
+                <div class="form-group row" *ngIf="projectData != null && projectData.length >= 0">
+                    <div class="col-sm-4">
+                        <form [formGroup]="searchForm"  autocomplete="off">
+                            <input type="text" maxlength="30"
+                                class="form-control" formControlName="search" id="search" placeholder="Search...">
+                        </form>
+                    </div>
+                    <div class="col-sm-8">
+                        <label class="col-sm-2 col-form-label fieldName">Sort:</label>
+                        <button type="button" (click)="sortByStartDate()" class="btn btn-secondary btn-property">Start Date &nbsp;<span [ngClass]="getSortIcon('startDate')"></span></button>
+                        <button type="button" (click)="sortByEndDate()" class="btn btn-secondary btn-property">End Date &nbsp;<span [ngClass]="getSortIcon('endDate')"></span></button>
+                        <button type="button" (click)="sortByPriority()" class="btn btn-secondary btn-property">Priority &nbsp;<span [ngClass]="getSortIcon('priority')"></span></button>
+                        <button type="button" (click)="sortByCompleted()" class="btn btn-secondary btn-property">Completed &nbsp;<span [ngClass]="getSortIcon('completed')"></span></button>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="projectData != null && projectData.length >= 0">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">    
+                                <tr>
+                                    <th scope="col">Project</th>
+                                    <th scope="col">Start Date</th>
+                                    <th scope="col">End Date</th>
+                                    <th scope="col">Priority</th>
+                                    <th scope="col">Manager</th>
+                                    <th scope="col">No.of Tasks</th>
+                                    <th scope="col">Completed</th>
+                                    <th scope="col" colspan="2" class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let project of projectData">
+                                    <td>{{project.project}}</td>
+                                    <td>{{project.startDate}}</td>
+                                    <td>{{project.endDate}}</td>
+                                    <td>{{project.priority}}</td>
+                                    <td>{{project.manager}}</td>
+                                    <td>{{project.noOfTasks}}</td>
+                                    <td>{{project.completed}}</td>
+                                    <td>
+                                        <button (click)='editProject(project)' class="btn btn-secondary btn-property">Update</button>
+                                    </td>    
+                                    <td>
+                                        <button (click)='suspendProject(project)' class="btn btn-secondary btn-property">Suspend</button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="projectData != null && projectData.length == 0">
+                                    <td colspan="8" align="center">
+                                        No Records Available
+                                    </td>    
+                                </tr>
+                            </tbody>    
+                        </table>
+                    </div>    
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+
+<div id="userModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Manager</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row" *ngIf="userData != null && userData.length >= 0">
+                    <div class="col-sm-4">
+                        <form [formGroup]="searchManagerForm"  autocomplete="off">
+                            <input type="text" maxlength="30"
+                                class="form-control" formControlName="searchManager" id="searchManager" placeholder="Search...">
+                        </form>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="userData != null && userData.length >= 0">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">    
+                                <tr>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Employee ID</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of userData">
+                                    <td>{{user.firstName}}</td>
+                                    <td>{{user.lastName}}</td>
+                                    <td>{{user.employeeId}}</td>
+                                    <td>
+                                        <button (click)='selectManager(user)' class="btn btn-secondary btn-property">Select</button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="userData != null && userData.length == 0">
+                                    <td colspan="4" align="center">
+                                        No Records Available
+                                    </td>
+                                </tr>
+                            </tbody>    
+                        </table>
+                    </div>    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    
+    </div>
+</div>

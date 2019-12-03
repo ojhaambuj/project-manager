@@ -1,0 +1,108 @@
+<ngx-spinner></ngx-spinner>
+<div id="accordion" id="userAddAccordion" class="myaccordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <a class="btn" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5 class="mb-0">Add User</h5>
+            </a>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#userAddAccordion">
+            <div class="card-body">
+                <form [formGroup]="userForm" ngNativeValidate (ngSubmit)="manageUser()" autocomplete="off">
+                    <div class="form-group-row"><label></label></div>
+                    <div class="form-group-row alert alert-success" *ngIf="isSuccess && alertMsg.length > 0">
+                        {{alertMsg}}
+                    </div>
+                    <div class="form-group-row alert alert-danger" *ngIf="!isSuccess && alertMsg.length > 0">
+                        <strong>Error:</strong> {{alertMsg}}
+                    </div>
+                    <div class="form-group row">
+                        <label for="firstName" class="col-sm-2 col-form-label fieldName">First Name:</label>
+                        <div class="col-sm-4">
+                            <input type="text" maxlength="30" class="form-control" 
+                                formControlName="firstName" id="firstName" placeholder="First Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lastName" class="col-sm-2 col-form-label fieldName">Last Name:</label>
+                        <div class="col-sm-4">
+                            <input type="text" maxlength="30" class="form-control"
+                                 formControlName="lastName" id="lastName" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="employeeId" class="col-sm-2 col-form-label fieldName">Employee ID:</label>
+                        <div class="col-sm-2">
+                            <input type="text" maxlength="10" class="form-control"
+                                 [attr.disabled]="addOrUpdate == 'Update'?true:null" formControlName="employeeId" id="employeeId" placeholder="Employee ID">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 offset-sm-2">
+                            <button type="submit" class="btn btn-secondary btn-property">{{addOrUpdate}}</button>
+                            <button type="reset" (click)="reset()" class="btn btn-secondary btn-property">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="accordion" id="userViewAccordion" class="myaccordion">
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <a class="btn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <h5 class="mb-0">View Users</h5>
+            </a>
+        </div>
+        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#userViewAccordion">
+            <div class="card-body">
+                <div class="form-group row" *ngIf="userData != null && userData.length >= 0">
+                    <div class="col-sm-4">
+                        <form [formGroup]="searchForm" autocomplete="off">
+                            <input type="text" maxlength="30" class="form-control"
+                                formControlName="search" id="search" placeholder="Search...">
+                        </form>
+                    </div>
+                    <div class="col-sm-8">
+                        <label class="col-sm-2 col-form-label fieldName">Sort:</label>
+                        <button type="button" (click)="sortByFirstName()" class="btn btn-secondary btn-property">First Name &nbsp;<span [ngClass]="getSortIcon('firstName')"></span></button>
+                        <button type="button" (click)="sortByLastName()" class="btn btn-secondary btn-property">Last Name &nbsp;<span [ngClass]="getSortIcon('lastName')"></span></button>
+                        <button type="button" (click)="sortByEmployeeId()" class="btn btn-secondary btn-property">Employee ID &nbsp;<span [ngClass]="getSortIcon('employeeId')"></span></button>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="userData != null && userData.length >= 0">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">    
+                                <tr>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Employee ID</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of userData">
+                                    <td>{{user.firstName}}</td>
+                                    <td>{{user.lastName}}</td>
+                                    <td>{{user.employeeId}}</td>
+                                    <td>
+                                        <button (click)='editUser(user)' class="btn btn-secondary btn-property">Edit</button>
+                                        <button (click)='deleteUser(user)' class="btn btn-secondary btn-property">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="userData != null && userData.length == 0">
+                                    <td colspan="4" align="center">
+                                        No Records Available
+                                    </td>
+                                </tr>
+                            </tbody>    
+                        </table>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>

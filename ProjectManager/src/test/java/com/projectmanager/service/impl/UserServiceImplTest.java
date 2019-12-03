@@ -20,7 +20,7 @@ import com.projectmanager.model.UserDTO;
 
 /**
  * 
- * @author sekarsk
+ * @author AmbujOjha
  *
  */
 @RunWith(SpringRunner.class)

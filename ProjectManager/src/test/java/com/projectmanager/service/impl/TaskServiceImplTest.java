@@ -20,7 +20,7 @@ import com.projectmanager.model.TaskDTO;
 
 /**
  * 
- * @author sekarsk
+ * @author ojhaak
  *
  */
 @RunWith(SpringRunner.class)

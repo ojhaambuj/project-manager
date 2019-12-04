@@ -16,7 +16,7 @@ import com.projectmanager.service.UserService;
 
 /**
  * 
- * @author ambujojha
+ * @author sekarsk
  *
  */
 @RunWith(SpringRunner.class)
